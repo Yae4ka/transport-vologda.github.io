@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История</title>
+    <style>  
+       main {
+             padding: 20px;
+             height: 1800px; /* Высота контента для прокрутки */
+         }
+ 
+ 
+         footer {
+             background-color: #333;
+             color: white;
+             text-align: center;
+             padding: 10px 0;
+         }
+         body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Контейнер для картинок */
+        .image-container {
+            display: flex; /* Используем Flexbox для расположения картинок */
+            flex-wrap: wrap; /* Если картинки не помещаются, переносим на новую строку */
+        }
+
+        /* Стили для каждой картинки */
+        .image-link {
+            position: relative; /* Для позиционирования ссылки */
+            width: 50%; /* Каждая картинка занимает половину ширины */
+            height: 500px; /* Высота картинки */
+            overflow: hidden; /* Скрываем всё, что выходит за пределы */
+        }
+
+        .image-link img {
+            width: 100%; /* Растягиваем на всю ширину */
+            height: 100%; /* Растягиваем на всю высоту */
+            object-fit: cover; /* Сохраняем пропорции и обрезаем лишнее */
+        }
+
+        /* Стили для гиперссылки */
+        .image-link a {
+            position: absolute; /* Абсолютное позиционирование */
+            top: 50%; /* Позиционируем по центру */
+            left: 50%;
+            transform: translate(-50%, -50%); /* Центрируем ссылку */
+            color: white; /* Цвет текста */
+            font-size: 1.5em;
+            text-decoration: none; /* Убираем подчёркивание */
+            background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+            padding: 10px 20px; /* Отступы внутри ссылки */
+            border-radius: 5px; /* Закруглённые углы */
+        }
+
+        .image-link a:hover {
+            background-color: rgba(0, 0, 0, 0.7); /* Цвет фона при наведении */
+        }
+     </style>
+   </head>
+<body>
+    <header>
+        <link rel="stylesheet" href="styles.css">  
+        <h1>Выберете историю</h1>
+          <nav>
+              <ul>
+                  <li><a href="index.html">Главная</a></li>
+                  <li><a href="history.html">История</a></li>
+                  <li><a href="structure.html">Подвижной состав</a></li>
+              </ul>
+          </nav>
+      </header>
+      <div class="image-container">
+        <!-- Первая картинка с гиперссылкой -->
+        <div class="image-link">
+            <img src="data/images/photo1.jpg" alt="Фотография 1">
+            <a href="bus.html">автобусы</a>
+        </div>
+
+        <!-- Вторая картинка с гиперссылкой -->
+        <div class="image-link">
+            <img src="data/images/photo2.jpg" alt="Фотография 2">
+            <a href="trolleybus.html">троллейбусы</a>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Исторический экскурс</p>
+    </footer>
+</body>
+</html>

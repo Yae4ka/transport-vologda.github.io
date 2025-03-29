@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Исторический экскурс</title>
+    <style>
+        /* Сброс отступов и установка шрифта */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Видео наверху */
+        .hero-video {
+            width: 100%; /* Ширина на всю страницу */
+            height: 400px; /* Высота видео */
+            overflow: hidden; /* Скрываем всё, что выходит за пределы */
+            position: relative; /* Для позиционирования текста поверх видео */
+        }
+
+        /* Само видео */
+        .hero-video video {
+            width: 100%; /* Растягиваем на всю ширину */
+            height: 100%; /* Растягиваем на всю высоту */
+            object-fit: cover; /* Сохраняем пропорции и обрезаем лишнее */
+        }
+
+        /* Контент под видео */
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content h1 {
+            margin-top: 0;
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        .content nav ul {
+            list-style-type: none; /* Убираем маркеры списка */
+            padding: 0;
+            margin: 20px 0 0;
+        }
+
+        .content nav ul li {
+            display: inline; /* Ссылки в одну строку */
+            margin: 0 15px; /* Отступы между ссылками */
+        }
+
+        .content nav ul li a {
+            color: #007BFF; /* Цвет ссылок */
+            text-decoration: none; /* Убираем подчёркивание */
+            font-size: 1.2em;
+        }
+
+        .content nav ul li a:hover {
+            text-decoration: underline; /* Подчёркивание при наведении */
+        }
+
+        /* Футер */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Видео наверху -->
+    <div class="hero-video">
+        <video autoplay muted loop>
+            <source src="data/videos/hero-background.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Контент под видео -->
+    <div class="content">
+        <h1>Добро пожаловать на сайт об истории</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="history.html">История</a></li>
+                <li><a href="structure.html">Подвижной состав</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="content">
+        <h2>О нашем сайте</h2>
+        <p>Этот сайт посвящён истории общественного транспорта города Вологды. Мы предлагаем вам погрузиться в прошлое и узнать много интересного.</p>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2025 Исторический экскурс</p>
+    </footer>
+</body>
+</html>
