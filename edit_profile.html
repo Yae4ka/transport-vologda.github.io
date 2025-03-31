@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование профиля - Исторический портал</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f0;
+            color: #333;
+        }
+        header {
+            background-color: #8B4513;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #A0522D;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        .container {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input, button, textarea {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #A0522D;
+        }
+        footer {
+            background-color: #8B4513;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Редактирование профиля</h1>
+    </header>
+    <nav>
+        <a href="profile.html">Назад в профиль</a>
+    </nav>
+    <div class="container">
+        <form id="editProfileForm">
+            <h2>Изменить данные</h2>
+            <input type="text" id="username" placeholder="Имя пользователя" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <textarea id="bio" placeholder="Расскажите о себе и своих интересах в истории..."></textarea>
+            <button type="submit">Сохранить изменения</button>
+        </form>
+        
+        <h3>Изменить пароль</h3>
+        <form id="changePasswordForm">
+            <input type="password" id="currentPassword" placeholder="Текущий пароль" required>
+            <input type="password" id="newPassword" placeholder="Новый пароль" required>
+            <input type="password" id="confirmNewPassword" placeholder="Подтвердите новый пароль" required>
+            <button type="submit">Изменить пароль</button>
+        </form>
+    </div>
+    <footer>
+        &copy; 2023 Исторический портал. Все права защищены.
+    </footer>
+
+    <script>
+        // Заполняем форму данными текущего пользователя
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        if (!currentUser) {
+            alert('Пожалуйста, войдите в систему!');
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('username').value = currentUser.username;
+            document.getElementById('email').value = currentUser.email;
+            document.getElementById('bio').value = currentUser.bio || '';
+        }
+        
+        // Обработчик формы редактирования профиля
+        document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const bio = document.getElementById('bio').value;
+            
+            // Обновляем данные текущего пользователя
+            currentUser.username = username;
+            currentUser.email = email;
+            currentUser.bio = bio;
+            
+            // Обновляем в localStorage
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Обновляем в списке пользователей
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(user => user.username === currentUser.username || user.email === currentUser.email);
+            
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            alert('Изменения сохранены!');
+            window.location.href = 'profile.html';
+        });
+        
+        // Обработчик формы изменения пароля
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            
+            if (currentUser.password !== currentPassword) {
+                alert('Текущий пароль неверен!');
+                return;
+            }
+            
+            if (newPassword !== confirmNewPassword) {
+                alert('Новые пароли не совпадают!');
+                return;
+            }
+            
+            // Обновляем пароль
+            currentUser.password = newPassword;
+            
+            // Обновляем в localStorage
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Обновляем в списке пользователей
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(user => user.username === currentUser.username || user.email === currentUser.email);
+            
+            if (userIndex !== -1) {
+                users[userIndex].password = newPassword;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            alert('Пароль успешно изменен!');
+            document.getElementById('changePasswordForm').reset();
+        });
+    </script>
+</body>
+</html>

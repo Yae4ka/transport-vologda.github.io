@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Исторический портал</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFCDD2;
+            color: #333;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #FFCDD2;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        .container {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #FFCDD2;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Регистрация на исторический портал</h1>
+    </header>
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="login.html">Вход</a>
+    </nav>
+    <div class="container">
+        <form id="registerForm">
+            <h2>Создать аккаунт</h2>
+            <input type="text" id="username" placeholder="Имя пользователя" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <input type="password" id="confirmPassword" placeholder="Подтвердите пароль" required>
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        <p>Уже есть аккаунт? <a href="login.html">Войдите здесь</a></p>
+    </div>
+    <footer>
+        &copy; 2023 Исторический портал. Все права защищены.
+    </footer>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Пароли не совпадают!');
+                return;
+            }
+            
+            // Проверяем, есть ли уже пользователи в localStorage
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Проверяем, существует ли уже пользователь с таким именем или email
+            const userExists = users.some(user => user.username === username || user.email === email);
+            
+            if (userExists) {
+                alert('Пользователь с таким именем или email уже существует!');
+                return;
+            }
+            
+            // Добавляем нового пользователя
+            users.push({
+                username: username,
+                email: email,
+                password: password
+            });
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            alert('Регистрация успешна! Теперь вы можете войти.');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

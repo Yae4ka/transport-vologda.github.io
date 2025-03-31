@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Исторический портал</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f0;
+            color: #333;
+        }
+        header {
+            background-color: #8B4513;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #A0522D;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        .container {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #A0522D;
+        }
+        footer {
+            background-color: #8B4513;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Вход на исторический портал</h1>
+    </header>
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="register.html">Регистрация</a>
+    </nav>
+    <div class="container">
+        <form id="loginForm">
+            <h2>Войдите в свой аккаунт</h2>
+            <input type="text" id="username" placeholder="Имя пользователя или Email" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <button type="submit">Войти</button>
+        </form>
+        <p>Еще нет аккаунта? <a href="register.html">Зарегистрируйтесь здесь</a></p>
+    </div>
+    <footer>
+        &copy; 2023 Исторический портал. Все права защищены.
+    </footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const usernameOrEmail = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Получаем пользователей из localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Ищем пользователя
+            const user = users.find(user => 
+                (user.username === usernameOrEmail || user.email === usernameOrEmail) && 
+                user.password === password
+            );
+            
+            if (user) {
+                alert('Вход выполнен успешно!');
+                // Сохраняем информацию о текущем пользователе
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                window.location.href = 'profile.html';
+            } else {
+                alert('Неверное имя пользователя/email или пароль!');
+            }
+        });
+    </script>
+</body>
+</html>

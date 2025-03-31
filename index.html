@@ -59,6 +59,99 @@
             text-decoration: underline; /* Подчёркивание при наведении */
         }
 
+        /* Стили для аутентификации */
+        .auth-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .auth-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .login-btn {
+            background-color: #4CAF50;
+        }
+
+        .register-btn {
+            background-color: #2196F3;
+        }
+
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            background-color: #8B4513;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .avatar-circle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 101;
+        }
+
+        .user-menu a {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .user-menu a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .show-menu {
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .welcome-message {
+            position: absolute;
+            top: 50px;
+            left: 20px;
+            color: white;
+            background-color: rgba(0,0,0,0.6);
+            padding: 5px 10px;
+            border-radius: 4px;
+            z-index: 100;
+        }
+
         /* Футер */
         footer {
             background-color: #333;
@@ -80,6 +173,22 @@
         <video autoplay muted loop>
             <source src="data/videos/hero-background.mp4" type="video/mp4">
         </video>
+        <div id="welcomeMessage" class="welcome-message hidden"></div>
+    </div>
+
+    <!-- Контейнер аутентификации -->
+    <div class="auth-container">
+        <div id="authButtons" class="auth-buttons">
+            <button class="auth-btn login-btn" onclick="location.href='login.html'">Вход</button>
+            <button class="auth-btn register-btn" onclick="location.href='register.html'">Регистрация</button>
+        </div>
+        <div id="avatarCircle" class="avatar-circle hidden"></div>
+        <div id="userMenu" class="user-menu">
+            <a href="profile.html">Профиль</a>
+            <a href="edit_profile.html">Настройки</a>
+            <a href="#" id="deleteAccountBtn">Удалить аккаунт</a>
+            <a href="#" id="logoutBtn">Выйти</a>
+        </div>
     </div>
 
     <!-- Контент под видео -->
@@ -104,5 +213,78 @@
     <footer>
         <p>&copy; 2025 Исторический экскурс</p>
     </footer>
+
+    <script>
+        // Проверяем, вошел ли пользователь
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const authButtons = document.getElementById('authButtons');
+            const avatarCircle = document.getElementById('avatarCircle');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            
+            if (currentUser) {
+                // Пользователь вошел - показываем аватар
+                authButtons.classList.add('hidden');
+                avatarCircle.classList.remove('hidden');
+                avatarCircle.textContent = currentUser.username.charAt(0).toUpperCase();
+                avatarCircle.title = currentUser.username;
+                
+                // Показываем приветственное сообщение
+                welcomeMessage.textContent = `Добро пожаловать, ${currentUser.username}!`;
+                welcomeMessage.classList.remove('hidden');
+            } else {
+                // Пользователь не вошел - показываем кнопки входа
+                authButtons.classList.remove('hidden');
+                avatarCircle.classList.add('hidden');
+                welcomeMessage.classList.add('hidden');
+            }
+            
+            // Обработчики для меню пользователя
+            avatarCircle?.addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('userMenu').classList.toggle('show-menu');
+            });
+            
+            document.addEventListener('click', function() {
+                const menu = document.getElementById('userMenu');
+                if (menu) menu.classList.remove('show-menu');
+            });
+            
+            // Выход из системы
+            document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('currentUser');
+                location.reload();
+            });
+            
+            // Удаление аккаунта
+            document.getElementById('deleteAccountBtn')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить!')) {
+                    deleteUserAccount(currentUser);
+                }
+            });
+        });
+        
+        function deleteUserAccount(userToDelete) {
+            // Получаем всех пользователей
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Фильтруем, оставляя всех кроме удаляемого
+            users = users.filter(user => 
+                user.username !== userToDelete.username && 
+                user.email !== userToDelete.email
+            );
+            
+            // Сохраняем обновленный список
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Удаляем текущую сессию
+            localStorage.removeItem('currentUser');
+            
+            // Перезагружаем страницу
+            window.location.href = 'index.html?account_deleted=true';
+        }
+    </script>
 </body>
 </html>

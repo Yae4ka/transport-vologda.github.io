@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Удаление аккаунта - Исторический портал</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f0;
+            color: #333;
+        }
+        header {
+            background-color: #8B4513;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #A0522D;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        .container {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .danger-zone {
+            border: 2px solid #ff4444;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .danger-zone h2 {
+            color: #ff4444;
+            margin-top: 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .delete-btn {
+            background-color: #ff4444;
+            color: white;
+        }
+        .cancel-btn {
+            background-color: #8B4513;
+            color: white;
+        }
+        footer {
+            background-color: #8B4513;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Удаление аккаунта</h1>
+    </header>
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="profile.html">Профиль</a>
+    </nav>
+    <div class="container">
+        <div class="danger-zone">
+            <h2>Опасная зона</h2>
+            <p>Вы собираетесь удалить свой аккаунт навсегда. Это действие нельзя отменить.</p>
+            <p>Все ваши данные будут безвозвратно удалены.</p>
+            
+            <button class="delete-btn" id="confirmDeleteBtn">Удалить аккаунт</button>
+            <button class="cancel-btn" onclick="location.href='profile.html'">Отмена</button>
+        </div>
+    </div>
+    <footer>
+        &copy; 2023 Исторический портал. Все права защищены.
+    </footer>
+
+    <script>
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (currentUser) {
+                // Получаем всех пользователей
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Фильтруем, оставляя всех кроме текущего
+                users = users.filter(user => 
+                    user.username !== currentUser.username && 
+                    user.email !== currentUser.email
+                );
+                
+                // Сохраняем обновленный список
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Удаляем текущую сессию
+                localStorage.removeItem('currentUser');
+                
+                // Перенаправляем на главную с сообщением
+                window.location.href = 'index.html?account_deleted=true';
+            } else {
+                alert('Ошибка: пользователь не найден');
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
